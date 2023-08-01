@@ -208,3 +208,4 @@ def test_start_run2():
 if __name__ == "__main__":
     import sys
     res = pytest.main(["-k", " or ".join(sys.argv[1:]), "-v", __file__])
+    print("test")
