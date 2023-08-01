@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import networkx as nx
 from create_mat_t import *
-from decimal import *
+
 
 def spreadr(network, start_run, retention=0.5, time=10, threshold_to_stop=None, decay=0, suppress=0, include_t0=False, never_stop=False):
     # is network a networkx graph? is network a numpy ndarray/pandas dataframe and if so, is it square-like?
@@ -122,72 +122,48 @@ def spreadr(network, start_run, retention=0.5, time=10, threshold_to_stop=None, 
 
 if __name__ == '__main__':
     pass
-    # d = {'node': [1,4,7],'activation':[100,100,100],'time':[0,0,0]}
-    # start_run = pd.DataFrame(data=d)
-    # network = np.array([[0, 1, 0, 0, 0, 0, 0, 0, 0],
-    #            [0, 0, 1, 0, 0, 0, 0, 0, 0],
-    #            [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #            [0, 0, 0, 0, 1, 0, 0, 0, 0],
-    #            [0, 0, 0, 0, 0, 1, 0, 0, 0],
-    #            [0, 0, 0, 0, 0, 0, 0, 0 ,0],
-    #            [0, 0, 0, 0, 0, 0, 0, 1, 0],
-    #            [0, 0, 0, 0, 0, 0, 0, 0, 1],
-    #            [0, 0, 0, 0, 0, 0, 0, 0, 0]]) 
-    # retention = [0,0,0,0,0.5,0,0,1,0]
-    # result = spreadr(network, start_run, time=5, retention=retention, include_t0=True)
-    # print(result.head)
-    # d = {'node':['a','c'],'activation':[10,5],'time':[3,2]}
-    # start_run = pd.DataFrame(data=d)
-    # nodes = ['a','b','c']
-    # edges = [('a','b'),('a','c'),('b','a'),('c','a')]
-    # network = nx.Graph()
-    # network.add_nodes_from(nodes)
-    # network.add_edges_from(edges)
-    # nx.set_edge_attributes(network, {('a','b'):{'weight':1},('a','c'):{'weight':9},('b','a'):{'weight':1},('c','a'):{'weight':9}})
-    # result = spreadr(network, start_run, retention=0, time=5, include_t0=True)
-    # print(result)
-    # case 1: directed edges
-    d = {'node':[0],'activation':[20]}
-    df = pd.DataFrame(data=d)
-    mat = np.array([[0,0,0,1,0],
-                    [1,0,0,1,0],
-                    [0,0,0,1,0],
-                    [0,1,0,0,0],
-                    [1,1,0,0,0]])
-    results = spreadr(mat, df, retention=0, time=5, suppress=0, decay=0, include_t0=True)
-    print(f"case 1: directed edges \n{results}")
-# case 2: weighted edges
-    d = {'node':[0],'activation':[10]}
-    df = pd.DataFrame(data=d)
-    mat = np.array([[0,1,9],[1,0,0],[9,0,0]])
-    results = spreadr(mat, df, retention=0, time=1, include_t0=True)
-    print(f"case 2: weighted edges \n{results}")
-# case 3: retention tests ----
-    d = {'node':[0],'activation':[10]}
-    df = pd.DataFrame(data=d)
-    mat = np.array([[0,1,1],[1,0,0],[1,0,0]])
-    results_1 = spreadr(mat, df, retention=0.5, time=1, include_t0=True)
-    print(f"case 3.1: retention \n{results_1}") # expected result: node 1 should retain 50% of original activation
-    results_2 = spreadr(mat, df, retention=0.8, time=2, include_t0=True)
-    print(f"case 3.2: retention \n{results_2}") # expected result: node 1 should retain 80% of original activation
-# case 4: decay test ----
-    d = {'node':[0],'activation':[10]}
-    df = pd.DataFrame(data=d)
-    mat = np.array([[0,1,1],[1,0,0],[1,0,0]])
-    results = spreadr(mat, df, retention=0.8, time=2, decay=0.1, include_t0=True)
-    print(f"case 4: decay \n{results}") # expected result: total activation should decrease by a factor of 0.1 at each time point
-# case 5: suppress test ----
-    d = {'node':[0],'activation':[10]}
-    df = pd.DataFrame(data=d)
-    mat = np.array([[0,1,1],[1,0,0],[1,0,0]])
-    results = spreadr(mat, df, retention=0.8, time=2, suppress=2, include_t0=True)
-    print(f"case 5: suppress \n{results}")
-# case 6: leaf nodes ----
-    d = {'node':[0],'activation':[20]}
-    df = pd.DataFrame(data=d)    
-    mat = np.array([[0,1,0,0,1],[0,0,0,1,1],[0,0,0,0,0],[1,1,1,0,0],[0,0,0,0,0]])
-    results = spreadr(mat, df, retention=0, time=3, suppress=0, decay=0, include_t0=True)
-    print(f"case 6: leaf \n{results}")
+    ##case 1: directed edges test
+    # d = {'node':[0],'activation':[20]}
+    # df = pd.DataFrame(data=d)
+    # mat = np.array([[0,0,0,1,0],
+    #                 [1,0,0,1,0],
+    #                 [0,0,0,1,0],
+    #                 [0,1,0,0,0],
+    #                 [1,1,0,0,0]])
+    # results = spreadr(mat, df, retention=0, time=5, suppress=0, decay=0, include_t0=True)
+    # print(f"case 1: directed edges \n{results}")
+    ##case 2: weighted edges test
+    # d = {'node':[0],'activation':[10]}
+    # df = pd.DataFrame(data=d)
+    # mat = np.array([[0,1,9],[1,0,0],[9,0,0]])
+    # results = spreadr(mat, df, retention=0, time=1, include_t0=True)
+    # print(f"case 2: weighted edges \n{results}")
+    ##case 3: retention tests ----
+    # d = {'node':[0],'activation':[10]}
+    # df = pd.DataFrame(data=d)
+    # mat = np.array([[0,1,1],[1,0,0],[1,0,0]])
+    # results_1 = spreadr(mat, df, retention=0.5, time=1, include_t0=True)
+    # print(f"case 3.1: retention \n{results_1}") # expected result: node 1 should retain 50% of original activation
+    # results_2 = spreadr(mat, df, retention=0.8, time=2, include_t0=True)
+    # print(f"case 3.2: retention \n{results_2}") # expected result: node 1 should retain 80% of original activation
+    ##case 4: decay test ----
+    # d = {'node':[0],'activation':[10]}
+    # df = pd.DataFrame(data=d)
+    # mat = np.array([[0,1,1],[1,0,0],[1,0,0]])
+    # results = spreadr(mat, df, retention=0.8, time=2, decay=0.1, include_t0=True)
+    # print(f"case 4: decay \n{results}") # expected result: total activation should decrease by a factor of 0.1 at each time point
+    ##case 5: suppress test ----
+    # d = {'node':[0],'activation':[10]}
+    # df = pd.DataFrame(data=d)
+    # mat = np.array([[0,1,1],[1,0,0],[1,0,0]])
+    # results = spreadr(mat, df, retention=0.8, time=2, suppress=2, include_t0=True)
+    # print(f"case 5: suppress \n{results}")
+    ##case 6: leaf nodes test----
+    # d = {'node':[0],'activation':[20]}
+    # df = pd.DataFrame(data=d)    
+    # mat = np.array([[0,1,0,0,1],[0,0,0,1,1],[0,0,0,0,0],[1,1,1,0,0],[0,0,0,0,0]])
+    # results = spreadr(mat, df, retention=0, time=3, suppress=0, decay=0, include_t0=True)
+    # print(f"case 6: leaf \n{results}")
 
 
 
