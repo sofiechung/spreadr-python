@@ -109,7 +109,7 @@ def spreadr(network, start_run, retention=0.5, time=10, threshold_to_stop=None, 
     
     nodes = list(network.columns) * (current_time+1)
     times = np.repeat([x for x in range(0,current_time+1)], n_nodes)
-    d = {'node': nodes, 'activation': [f'{elem:.18f}' for elem in activations], 'time': times}
+    d = {'node': nodes, 'activation': [round(elem,10) for elem in activations], 'time': times}
     return_df = pd.DataFrame(data=d)
 
     if not(include_t0):
