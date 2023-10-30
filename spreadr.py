@@ -119,6 +119,42 @@ def spreadr(network, start_run, retention=0.5, time=10, threshold_to_stop=None, 
 
     return return_df
 
+    
+def extract_specific(return_df, node_time):
+    """
+    @params:
+        return_df: Pandas DataFrame returned from spreadr()
+        node_times: List of two-element Tuples that denote the (node, time) activation value desired
+    """
+    set_nodes = set(return_df['node'].values)
+    set_times = set(return_df['time'].values)
+    for pair in node_time:
+        if pair[0] not in set_nodes:
+            raise KeyError(f"Node {pair[0]} is not in the return_df!")
+        elif pair[1] not in set_times:
+            raise KeyError(f"Time {pair[1]} is not in the return_df!")
+        else:
+            print(return_df.loc[return_df['node'] == pair[0] & return_df['time'] == pair[1]])
+
+def extract_all(return_df, nodes=[], times=[]):
+    """
+    @params:
+        return_df: Pandas DataFrame returned from spreadr()
+        node: List of nodes whose activation values are desired
+        time: List of times whose activation values are desired
+    """
+    set_nodes = set(return_df['node'].values)
+    set_times = set(return_df['time'].values)
+    for node in nodes:
+        if node not in set_nodes:
+            raise KeyError(f"Node {node} is not in the return_df!")
+        else:
+            print(return_df.loc[return_df['node'] == node])
+    for time in times:
+        if time not in set_times:
+            raise KeyError(f"Time {time} is not in the return_df!")  
+        else:
+            print(return_df.loc[return_df['time'] == time])  
 
 if __name__ == '__main__':
     pass
