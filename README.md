@@ -5,7 +5,7 @@ The notion of spreading activation is a prevalent metaphor in the cognitive scie
 
 # getting started
 ## prerequisites
-There are also a few Python libraries that need to be installed, in order for the package to function: NumPy, Pandas, and NetworkX. They can all be installed with pip by executing the pip install command as shown below:
+There are a few Python libraries that need to be installed, in order for the package to function: NumPy, Pandas, and NetworkX. They can all be installed with pip by executing the pip install command as shown below:
 
 ```
 pip install numpy
@@ -26,21 +26,33 @@ Alternatively, source files of the most recent commit can just be directly downl
 
 # spreadr function
 ## arguments
-**network**: A database which represents the nodes and edges of the network that spreading activation will be applied to. Can be a Pandas dataframe, NumPy ndarray, or NetworkX graph. For example, if one is using a NumPy ndarray as their network representation, the input could look like this:
+**network**: A database which represents the nodes and edges of the network that spreading activation will be applied to. Networks can have either directed/undirected edges, and they can also be weighted. Can be a Pandas dataframe, NumPy ndarray, or NetworkX graph. Here is the same network in three different formats:
 ```
-example_network = np.array([[0,0,0,1]],
-                            [1,0,0,1],
-                            [0,0,0,1],
-                            [0,1,0,0],
-```
-The above example is a 4x4 adjacency matrix which illustrates a connection between (node1,node4), (node1,node2), (node2,node4), and (node3,node4).
+import pandas as pd
+import numpy as np
+import networkx as nx
 
-**start_run**: A Pandas dataframe which contains the activation values assigned to specific nodes at time t=0. Here is an example input:
+panda = pd.Dataframe(data = [[0,1,1],[1,0,0],[1,0,0]],
+                  columns = ['node1','node2','node3'],
+                    index = ['node1','node2','node3'])
+                         
+numpy = np.array([[0,1,1],
+                  [1,0,0],
+                  [1,0,0]])
+
+networkx = nx.Graph()
+networkx.add_nodes_from(['node1','node2','node3'])
+networkx.add_edges_from([('node1','node2'),('node1','node3')])
+nx.set_edge_attributes(network, {('node1','node2'):{'weight':1},('node1','node3'):{'weight':1}})                  
+```
+The above examples represent a 3x3 network with connections between ('node1', 'node2') and ('node1', 'node3'). Note that the rows and columns in NumPy arrays cannot be named, so if your nodes have specific names, it may be better to use either a Pandas dataframe or NetworkX graph. And if you want to set weights to specific edges, use a NetworkX graph. 
+
+**start_run**: A Pandas dataframe which contains the activation values assigned to specific nodes at time t = 0. Here is an example input:
 ```
 init_act = {'node':[0],'activation':[20]}
 example_start_run = pd.Dataframe(data = init_act)
 ```
-The above example indicates that at time t=0, we want to apply activation value 20 to node 0 in our network. 
+The above example indicates that at time t = 0, we want to apply activation value 20 to node 0 in our network. 
 
 **retention**: The proportion of activation retained in the originator node (ranges from 0 to 1). Default is 0.5. 
 
@@ -54,7 +66,7 @@ The above example indicates that at time t=0, we want to apply activation value 
 
 **include_t0**: A boolean where TRUE indcates that the output will include time t=0, and FALSE indicates that the ouput will not include time t=0. Default is False.
 
-**never_stop**: A boolean where TRUE indicates for the program to continue running, even if there is an infinite loop, and FALSE indicates for the program to terminate once >10000 iterations have passed. Default is False.
+**never_stop**: A boolean where TRUE indicates for the program to continue running, even if there is an infinite loop, and FALSE indicates for the program to terminate once > 10000 iterations have passed. Default is False.
 
 ## output
 The spreadr function will return a Pandas dataframe of the network which maps each node to their activation value at every timestep. Here is an example output:
@@ -75,7 +87,7 @@ The spreadr-python package includes two additional functions which modifies the 
 **extract_all**: This function will print either all the activation values for a specified node or all the activation values for a specified time, or both.
 
 ### output notes
-As is, the spreadr function's output rounds all activation values up to 10 decimal points, as shown below:
+As is, the spreadr function's output rounds all activation values up to 10 decimal points, as shown below with the **round** function:
 ```
   d = {'node': nodes, 'activation': [round(elem,10) for elem in activations], 'time': times}
   return_df = pd.DataFrame(data=d)
