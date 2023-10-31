@@ -81,4 +81,8 @@ As is, the spreadr function's output rounds all activation values up to 10 decim
   return_df = pd.DataFrame(data=d)
 ```
 This can obviosuly be modified to however the user sees fit, but just note that the test file **spreadr_test.py** will only pass all test cases with the above format. 
+
+# roadmap
+- [ ] Implement Cython package into **create_mat_t.py** to decrease runtime for extremely large networks.
+- [ ] Create a function which outputs a visual simulation of the spreading activation for a network.
 # 
